@@ -18,7 +18,7 @@ type Barrier struct {
 	condition *sync.Cond
 }
 
-// A function to create a barrier using OOP composition and 
+// A function to create a barrier using OOP composition and
 // encapsulation
 func NewBarrier(size int) *Barrier {
 
@@ -27,14 +27,13 @@ func NewBarrier(size int) *Barrier {
 
 	//  Return a new barrier can be worked on or with
 	return &Barrier{
-		total: size,
-		count: size ,
-		mu: locks,
+		total:     size,
+		count:     size,
+		mu:        locks,
 		condition: cond,
 	}
 
 }
-
 
 // Create a function for the barrier the details the functionality
 // of a barrier.
@@ -42,12 +41,12 @@ func NewBarrier(size int) *Barrier {
 // It works by
 func (barrier *Barrier) Wait() {
 
-	// 1. Lock access to the elements of the struct that would be 
+	// 1. Lock access to the elements of the struct that would be
 	// updated
 	barrier.mu.Lock()
 
 	// This Wait function is called from within multiple threads
-	// reduce the value fo the count by 1 for each thread that calls 
+	// reduce the value fo the count by 1 for each thread that calls
 	// this barrier.Wait method
 	barrier.count--
 
@@ -55,11 +54,11 @@ func (barrier *Barrier) Wait() {
 	// the barrier
 	if barrier.count == 0 {
 
-		// if we have exhausted then we reset the value to the original 
+		// if we have exhausted then we reset the value to the original
 		// value of the number of threads so we can use it again if needed
 		barrier.count = barrier.total
 
-		// Broadcast to all the thread waiting for the depletion of the 
+		// Broadcast to all the thread waiting for the depletion of the
 		// count variable so that continue execution
 		barrier.condition.Broadcast()
 	} else {
